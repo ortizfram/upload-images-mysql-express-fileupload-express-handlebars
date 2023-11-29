@@ -1,0 +1,31 @@
+{
+  "name": "upload-images-mysql-express-fileupload-express-handlebars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ortizfram/upload-images-mysql-express-fileupload-express-handlebars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ortizfram/upload-images-mysql-express-fileupload-express-handlebars/issues"
+  },
+  "homepage": "https://github.com/ortizfram/upload-images-mysql-express-fileupload-express-handlebars#readme",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.3",
+    "express-handlebars": "^7.1.2",
+    "mysql2": "^3.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
