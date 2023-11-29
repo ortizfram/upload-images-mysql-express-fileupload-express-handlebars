@@ -15,7 +15,11 @@
     </form>
     <hr>
     <div style="border: 1px,black;">
-        <img src="#" alt="image">
+        <% if (thumbnailPath) { %>
+            <img src="<%= thumbnailPath %>" alt="Thumbnail">
+        <% } else { %>
+            <p>No thumbnail available</p>
+        <% } %>
     </div>
 </body>
 </html>

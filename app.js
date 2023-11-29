@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import fileUpload from "express-fileupload";
-import { testDbConnection } from "./db/db.js";
+import pool, { testDbConnection } from "./db/db.js";
 import { createTable, createUpload } from "./db/queries.js";
 
 // configs
@@ -12,7 +12,6 @@ const port = 3000;
 
 //default option
 app.use(fileUpload());
-
 
 // db use JSON
 app.use(express.urlencoded({ extended: true }));
@@ -25,16 +24,17 @@ const __dirname = path.dirname(__filename);
 app.set("view engine", "ejs");
 app.set("views", [path.join(__dirname, "views", "templates")]);
 
-// routes 
+// routes
 //===================================================================
 app.get("", (req, res) => {
-  res.render("home");
+  const thumbnailPath = req.query.thumbnailPath;
+  res.render("home", { thumbnailPath });
 });
 
 app.post("", (req, res) => {
   //upload funct
   let thumbnail;
-  let uploadPath;
+  let relativePath;
 
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send("No files were uploaded");
@@ -42,18 +42,21 @@ app.post("", (req, res) => {
 
   // name of input is thumbnail
   thumbnail = req.files.thumbnail;
-  uploadPath = __dirname + "/upload/" + thumbnail.name;
-  console.log(thumbnail); //show obj thumbnail
+  relativePath = "/uploads/" + thumbnail.name;
+  console.log(" "); 
+  console.log("thumbnail :", thumbnail); 
+  console.log(" "); 
+  console.log("relativePath :", relativePath); 
 
   // Use mv() to place file on the server
-  thumbnail.mv(uploadPath, async function (err) {
+  thumbnail.mv(path.join(__dirname, "uploads", thumbnail.name), async function (err) {
     // error => error
     if (err) return res.status(500).send(err);
 
     // if OK. createTable, upload to table, send msg
     const [table] = await pool.execute(createTable);
     // Check if table was created or already existed
-    if (result.affectedRows === 0) {
+    if (table.affectedRows === 0) {
       console.log(" ");
       console.log("Table already existed.");
     } else {
@@ -71,11 +74,10 @@ app.post("", (req, res) => {
 
     //redirect When done
     if (!err) {
-        res.redirect("/")
+      res.redirect(`/?thumbnailPath=${relativePath}`);
     } else {
-        console.log(err)
+      console.log(err);
     }
-
   });
 });
 
