@@ -42,14 +42,16 @@ app.post("", (req, res) => {
 
   // name of input is thumbnail
   thumbnail = req.files.thumbnail;
-  relativePath = "/uploads/" + thumbnail.name;
+  //replace spaces with URL-encoded values using encodeURIComponent to avoid issues with spaces in the file name:
+  const filename = encodeURIComponent(thumbnail.name);
+  relativePath = "/uploads/" + filename;
   console.log(" "); 
   console.log("thumbnail :", thumbnail); 
   console.log(" "); 
   console.log("relativePath :", relativePath); 
 
   // Use mv() to place file on the server
-  thumbnail.mv(path.join(__dirname, "uploads", thumbnail.name), async function (err) {
+  thumbnail.mv(path.join(__dirname, "uploads", filename), async function (err) {
     // error => error
     if (err) return res.status(500).send(err);
 
@@ -65,7 +67,7 @@ app.post("", (req, res) => {
     }
 
     // upload to table
-    const [rows] = await pool.execute(createUpload, [thumbnail.name]);
+    const [rows] = await pool.execute(createUpload, [filename]);
 
     //msg
     console.log(" ");
