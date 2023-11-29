@@ -14,7 +14,7 @@
         <input type="submit" value="submit" class="btn btn-primary">
     </form>
     <hr>
-    <div style="border: 1px,black;">
+    <div class="image-container">
         <% if (thumbnailPath) { %>
             <img src="<%= thumbnailPath %>" alt="Thumbnail">
         <% } else { %>
@@ -22,4 +22,19 @@
         <% } %>
     </div>
 </body>
+
+<style>
+    .image-container {
+    border: 1px solid black;
+    width: 25vw; /* 25% of viewport width */
+    height: 25vw; /* Set the height same as width to create a square container */
+    overflow: hidden; /* Hide overflow content beyond the container */
+}
+
+.image-container img {
+    width: 100%; /* Make the image fill the container */
+    height: 100%; /* Make the image fill the container */
+    object-fit: cover; /* Scale the image to cover the entire container */
+}
+</style>
 </html>
