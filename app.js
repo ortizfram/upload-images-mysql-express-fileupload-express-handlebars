@@ -10,6 +10,9 @@ import { createTable, createUpload } from "./db/queries.js";
 const app = express();
 const port = 3000;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 //default option
 app.use(fileUpload());
 
@@ -17,8 +20,8 @@ app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+//Set up serving static files in Express:
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // config templates and EJS
 app.set("view engine", "ejs");
